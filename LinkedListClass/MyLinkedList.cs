@@ -6,42 +6,39 @@ using System.Threading.Tasks;
 
 namespace LinkedListClass
 {
+    public class LinkedListNode<L>
+    {
+        public L value;
+        public LinkedListNode<L> prev;
+        public LinkedListNode<L> next;
+
+        public LinkedListNode(L value)
+        {
+            this.value = value;
+            this.prev = null;
+            this.next = null;
+        }
+    }
     public class MyLinkedList<T>
     {
-        public class Item
-        {
-            public T value;
-            public Item prev;
-            public Item next;
-
-            public Item(T value)
-            {
-                this.value = value;
-                this.prev = null;
-                this.next = null;
-            }
-        }
-        private Item head = null;
-        private Item tail = null;
-
-        public T First;
+        public LinkedListNode<T> First = null;
+        public LinkedListNode<T> Last = null;
 
         public MyLinkedList(T[] values)
         {
-            tail = head = new Item(values[0]);
-            First = values[0];
-            Item prev;
-            for(int i = 1; i < values.Length; i++)
+            Last = First = new LinkedListNode<T>(values[0]);
+            LinkedListNode<T> prev;
+            for (int i = 1; i < values.Length; i++)
             {
-                tail.next = new Item(values[i]);
-                prev = tail;
-                tail = tail.next;
-                tail.prev = prev;
+                Last.next = new LinkedListNode<T>(values[i]);
+                prev = Last;
+                Last = Last.next;
+                Last.prev = prev;
             }
         }
         public bool Contains(T value)
         {
-            Item el = head;
+            LinkedListNode<T> el = First;
             while (el != null)
             {
                 if (el.value.Equals(value))
@@ -54,16 +51,67 @@ namespace LinkedListClass
         }
         public void AddFirst(T value)
         {
-            Item item = new Item(value);
-            item.next = head;
-            head.prev = item;
-            head = item;
+            LinkedListNode<T> item = new LinkedListNode<T>(value);
+            item.next = First;
+            First.prev = item;
+            First = item;
+        }
+        public void AddFirst(LinkedListNode<T> value)
+        {
+            value.prev = null;
+            value.next = First;
+            First.prev = value;
             First = value;
+        }
+        public void RemoveFirst()
+        {
+            First = First.next;
+            First.prev = null;
+        }
+        public void AddLast(T value)
+        {
+            LinkedListNode<T> item = new LinkedListNode<T>(value);
+            item.prev = Last;
+            Last.next = item;
+            Last = item;
+        }
+        public void AddLast(LinkedListNode<T> value)
+        {
+            value.next = null;
+            value.prev = Last;
+            Last.next = value;
+            Last = value;
+        }
+        public void RemoveLast()
+        {
+            Last = Last.prev;
+            Last.next = null;
+        }
+        public LinkedListNode<T> FindLast(T value)
+        {
+            LinkedListNode<T> node = Last;
+            while (node != null)
+            {
+                if (node.value.Equals(value))
+                {
+                    return node;
+                }
+                node = node.prev;
+            }
+            return null;
+        }
+        public void AddAfter(LinkedListNode<T> current, T value)
+        {
+            LinkedListNode<T> node = current.next;
+            current.next = new LinkedListNode<T>(value);
+            current = current.next;
+            current.prev = node.prev;
+            current.next = node;
         }
         public override string ToString()
         {
             string str = "";
-            Item item = head;
+            LinkedListNode<T> item = First;
             while (item != null)
             {
                 str += item.value.ToString();

@@ -4,18 +4,37 @@
     {
         static void Main(string[] args)
         {
+            // Create the link list.
             string[] words =
-            { "the", "fox", "jumps", "over", "the", "dog" };
-            MyLinkedList<string> list = new MyLinkedList<string> (words);
+                { "the", "fox", "jumps", "over", "the", "dog" };
+            MyLinkedList<string> sentence = new MyLinkedList<string>(words);
             Console.WriteLine("sentence.Contains(\"jumps\") = {0}",
-                list.Contains("jumps"));
+                sentence.Contains("jumps"));
 
-            list.AddFirst("Why");
-            Console.WriteLine(list.ToString());
+            // Add the word 'today' to the beginning of the linked list.
+            sentence.AddFirst("today");
+            Console.WriteLine(sentence.ToString());
 
-            LinkedListNode<string> mark1 = list.First;
-            list.RemoveFirst();
-            list.AddLast(mark1);
+            // Move the first node to be the last node.
+            LinkedListNode<string> mark1 = sentence.First;
+            sentence.RemoveFirst();
+            sentence.AddLast(mark1);
+            Console.WriteLine(sentence.ToString());
+
+            // Change the last node to 'yesterday'.
+            sentence.RemoveLast();
+            sentence.AddLast("yesterday");
+            Console.WriteLine(sentence.ToString());
+
+            // Move the last node to be the first node.
+            mark1 = sentence.Last;
+            sentence.RemoveLast();
+            sentence.AddFirst(mark1);
+            Console.WriteLine(sentence.ToString());
+
+            sentence.RemoveFirst();
+            LinkedListNode<string> current = sentence.FindLast("the");
+            Console.WriteLine(current.next.value);
         }
     }
 }
