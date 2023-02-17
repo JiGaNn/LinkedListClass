@@ -100,13 +100,34 @@ namespace LinkedListClass
             }
             return null;
         }
+        public LinkedListNode<T> Find(T value)
+        {
+            LinkedListNode<T> node = First;
+            while (node != null)
+            {
+                if (node.value.Equals(value))
+                {
+                    return node;
+                }
+                node = node.next;
+            }
+            return null;
+        }
         public void AddAfter(LinkedListNode<T> current, T value)
         {
-            LinkedListNode<T> node = current.next;
-            current.next = new LinkedListNode<T>(value);
-            current = current.next;
-            current.prev = node.prev;
+            LinkedListNode<T> node = new LinkedListNode<T>(value);
+            node.prev = current;
+            node.next = current.next;
             current.next = node;
+            if (node.next == null) Last = node;
+        }
+        public void AddBefore(LinkedListNode<T> current, T value)
+        {
+            LinkedListNode<T> node = new LinkedListNode<T>(value);
+            node.prev = current.prev;
+            node.next = current;
+            current.prev = node;
+            if (node.prev == null) First = node;
         }
         public override string ToString()
         {

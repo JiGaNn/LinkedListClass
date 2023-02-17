@@ -35,6 +35,21 @@
             sentence.RemoveFirst();
             LinkedListNode<string> current = sentence.FindLast("the");
             Console.WriteLine(current.next.value);
+
+            // Add 'lazy' and 'old' after 'the' (the LinkedListNode named current).
+            sentence.AddAfter(current, "old");
+            sentence.AddAfter(current, "lazy");
+            Console.WriteLine(sentence.ToString());
+
+            // Indicate 'fox' node.
+            current = sentence.Find("fox");
+            Console.WriteLine(current.next.value);
+
+            // Add 'quick' and 'brown' before 'fox':
+            sentence.AddBefore(current, "quick");
+            sentence.AddBefore(current, "brown");
+            Console.WriteLine(sentence.ToString());
+
         }
     }
 }
