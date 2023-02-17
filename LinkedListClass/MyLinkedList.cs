@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,7 @@ namespace LinkedListClass
             this.next = null;
         }
     }
-    public class MyLinkedList<T>
+    public class MyLinkedList<T> : IEnumerable<T>
     {
         public LinkedListNode<T> First = null;
         public LinkedListNode<T> Last = null;
@@ -120,6 +121,7 @@ namespace LinkedListClass
             node.next = current.next;
             current.next = node;
             if (node.next == null) Last = node;
+            else node.next.prev = node;
         }
         public void AddBefore(LinkedListNode<T> current, T value)
         {
@@ -128,19 +130,45 @@ namespace LinkedListClass
             node.next = current;
             current.prev = node;
             if (node.prev == null) First = node;
+            else node.prev.next = node;
         }
         public override string ToString()
         {
             string str = "";
-            LinkedListNode<T> item = First;
-            while (item != null)
+            foreach (T value in this)
             {
-                str += item.value.ToString();
-                str += " ";
-                item = item.next;
+                str += value + " ";
             }
             return str;
+            
+            //LinkedListNode<T> item = First;
+            //while (item != null)
+            //{
+            //    str += item.value.ToString();
+            //    str += " ";
+            //    item = item.next;
+            //}
+            //return str;
         }
 
+        public IEnumerator<T> GetEnumerator()
+        {
+            LinkedListNode<T> node = First;
+            while (node != null)
+            {
+                yield return node.value;
+                node = node.next;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            LinkedListNode<T> node = First;
+            while (node != null)
+            {
+                yield return node.value;
+                node = node.next;
+            }
+        }
     }
 }
